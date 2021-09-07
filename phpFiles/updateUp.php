@@ -36,4 +36,4 @@ if (mysqli_num_rows($unicity_email) > 0) {
 
 $_SESSION['message'] = 'successful update';
 //    echo $_SESSION;
-header('Location: ../index.php');
+header('Location: profile.php');
