@@ -1,5 +1,13 @@
 <?php
-    session_start();
+setcookie("session_name", time() + 100000);
+// Check logged user;
+//if (isset($_COOKIE[session_name()])) {
+//    session_start();
+//}
+if (isset($_SESSION["login"]) && $_COOKIE[session_name()] === TRUE) {
+    header("location: phpFiles/profile.php");
+    exit;
+}
 ?>
 
 
@@ -7,6 +15,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>shop</title>
     <style>
         body {
             font-family: Arial;
@@ -32,8 +41,8 @@ if  ($_SESSION['message']) {
     <!--Sign in form-->
 
     <form action="phpFiles/signin.php" method="post">
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username"><br>
+        <label for="login">Username:</label><br>
+        <input type="text" id="login" name="login"><br>
         <label for="password">Password:</label><br>
         <input type="password" id="password" name="password" ><br><br>
         <input type="submit" value="Log in">
