@@ -2,10 +2,11 @@
 session_start();
     $connect = mysqli_connect('127.0.0.1', 'root', 'root', 'shop');
 
-    $login = $_POST['username'];
+    $login = $_POST['login'];
     $password = hash('sha256', $_POST['password']);
         // select user and pass this user
     $check_user = mysqli_query($connect, "SELECT * FROM `users` WHERE `login` = '$login' AND `password` = '$password'");
+
 
        if (mysqli_num_rows($check_user) > 0) {
 
@@ -16,10 +17,10 @@ session_start();
             "fname" => $user['fname'],
             "lname" => $user['lname'],
             "email" => $user['email'],
-            "phone" => $user['phone'],
-            "id"    => $user['userid']
+            "phone" => $user['phone']
         ];
 
+        $_SESSION['userid'] =  $user['userid'];
         header('Location: profile.php');
 
     } else {
