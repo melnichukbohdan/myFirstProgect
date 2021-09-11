@@ -22,13 +22,14 @@ session_start();
 </head>
 <body>
 <?php
-if  ($_SESSION['message']) {
+if  ($_SESSION['message'])
+{
 echo $_SESSION['message'];
 }
 ?>
 
 <h2>Please fill in the registration form</h2>
-<!--sign ip form-->
+<!--user registration form-->
 <form action="signUp.php" method="post">
     <label for="login">Username:</label><br>
     <input type="text" id="login" name="login" minlength="6" maxlength="10" required><br>

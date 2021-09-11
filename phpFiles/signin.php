@@ -1,29 +1,32 @@
 <?php
+
+require_once 'ConnectDB.php';
+require_once 'configConnect.php';
+
 session_start();
-    $connect = mysqli_connect('127.0.0.1', 'root', 'root', 'shop');
 
     $login = $_POST['login'];
     $password = hash('sha256', $_POST['password']);
-        // select user and pass this user
-    $check_user = mysqli_query($connect, "SELECT * FROM `users` WHERE `login` = '$login' AND `password` = '$password'");
 
+    //user authorization and routing to the profile page or start page in case of incorrect login or password
+       if ($connect->selectFromDatabase("SELECT * FROM `users` WHERE `login` = '$login' AND `password` = '$password'"))
+    {
 
-       if (mysqli_num_rows($check_user) > 0) {
-
-        $user = mysqli_fetch_assoc($check_user); // converting the query result to a database into an array
+        $user = $connect->findUser($login);
 
         $_SESSION['user'] = [
-            "login" => $user['login'],
-            "fname" => $user['fname'],
-            "lname" => $user['lname'],
-            "email" => $user['email'],
-            "phone" => $user['phone']
+            "login" => $user->getLogin(),
+            "fname" => $user->getFname(),
+            "lname" => $user->getLname(),
+            "email" => $user->getEmail(),
+            "phone" => $user->getPhone()
         ];
 
-        $_SESSION['userid'] =  $user['userid'];
+        $_SESSION['userid'] =  $user->getId();
         header('Location: profile.php');
 
-    } else {
+    } else
+    {
         $_SESSION['message'] = 'Wrong login or password';
         header('Location: ../index.php');
     }

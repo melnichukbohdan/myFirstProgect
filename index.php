@@ -1,15 +1,12 @@
 <?php
 setcookie("session_name", time() + 100000);
-// Check logged user;
-//if (isset($_COOKIE[session_name()])) {
-//    session_start();
-//}
-if (isset($_SESSION["login"]) && $_COOKIE[session_name()] === TRUE) {
-    header("location: phpFiles/profile.php");
-    exit;
+session_start();
+
+if (isset($_SESSION['user']))
+{
+        header("location: phpFiles/profile.php");
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,10 +30,10 @@ if (isset($_SESSION["login"]) && $_COOKIE[session_name()] === TRUE) {
 
 <h1>Welcome to our shop</h1>
 <?php
+
 if  ($_SESSION['message']) {
         echo $_SESSION['message'];
         }
-
 ?>
     <!--Sign in form-->
 

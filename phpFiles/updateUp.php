@@ -1,8 +1,9 @@
 <?php
+
+require_once 'ConnectDB.php';
+require_once 'configConnect.php';
+
 session_start();
-
-
-$connect = mysqli_connect('127.0.0.1', 'root', 'root', 'shop');
 
 $login= $_POST['login'];
 $password = $_POST['password'];
@@ -16,37 +17,27 @@ $id = $_SESSION['userid'];
 
 $password = hash('sha256', $password);
 
-//$user = mysqli_query($connect, "SELECT * FROM `users` WHERE 'userid' = '$id'");
-
-$unicity_user = mysqli_query($connect, "SELECT * FROM `users` WHERE `login` = '$login'");
-
-if (mysqli_num_rows($unicity_user) > 0) {
-    $_SESSION['message'] = 'user with login ' . $login . ' exisist';
-    header('Location: updateProfile.php');
-    return;
-    }
-
-$unicity_email = mysqli_query($connect, "SELECT * FROM `users` WHERE `email` = '$email'");
-if (mysqli_num_rows($unicity_email) > 0) {
+    //check whether the email is being used by another user
+if ($connect->selectFromDatabase("SELECT * FROM `users` WHERE `email` = '$email'")) {
     $_SESSION['message'] = 'user with email ' . $email . ' exisist';
     header('Location: updateProfile.php');
     return;
 }
+    // update user date in the database
 try {
-    mysqli_query($connect, "UPDATE `users` SET login='$login', Password='$password', fname='$fname', lname='$lname', email='$email', phone='$phone'
-WHERE userid='$id'
-");
+    $connect->updateUser($id, $login, $password, $fname, $lname, $email, $phone);
 } catch (Exception $e) {
     echo $e;
 }
 
+$user = $connect->findUser($login);
+
 $_SESSION['user'] = [
-    "login" => $login,
-    "password" =>$password,
-    "fname" => $fname,
-    "lname" => $lname,
-    "email" => $email,
-    "phone" => $phone
+    "login" => $user->getLogin(),
+    "fname" => $user->getFname(),
+    "lname" => $user->getLname(),
+    "email" => $user->getEmail(),
+    "phone" => $user->getPhone()
 ];
 
 $_SESSION['message'] = 'successful update';

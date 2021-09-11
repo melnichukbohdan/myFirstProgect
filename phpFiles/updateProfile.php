@@ -34,7 +34,7 @@ if  ($_SESSION['message']) {
 <!--sign ip form-->
 <form action="updateUp.php" method="post">
     <label for="login">Username:</label><br>
-    <input type="text" id="login" name="login" value="<?php echo $_SESSION['user']['login'] ?>", " minlength="6" maxlength="10" required><br>
+    <input type="text" id="login" name="login" value="<?php echo $_SESSION['user']['login'] ?>" readonly " minlength="6" maxlength="10" required><br>
     <label for="password">Password:</label><br>
     <input type="password" id="password" name="password" minlength="6" maxlength="16"required><br><br>
     <label for="fname">First name:</label><br>
